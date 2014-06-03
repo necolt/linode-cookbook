@@ -17,7 +17,7 @@ end
 
 # try to match the node name to the label first
 this_linode = linodes.detect do |l|
-  l.label == node.name
+  l.label == node.name.split('.')[0]
 end
 
 if this_linode
@@ -44,39 +44,6 @@ node.set[:public_ipv6]  = node_addrs.keys.detect { |ip|
                             node_addrs[ip][:family] == 'inet6' &&
                             node_addrs[ip][:scope].downcase == 'global'
                           }
-
-execute "set_hostname" do
-  command "hostname #{node.name}"
-  only_if { `hostname`.chomp != node.name }
-end
-
-file "/etc/hostname" do
-  content node.name
-  owner 'root'
-  group 'root'
-  mode "0644"
-end
-
-template "/etc/hosts" do
-  source "hosts.erb"
-  owner 'root'
-  group 'root'
-  mode "0644"
-  variables :public_ip => node[:public_ipv4],
-            :domain    => node[:set_domain],
-            :hostname  => node.name
-end
-
-template "/etc/resolv.conf" do
-  source "resolv.conf.erb"
-  owner 'root'
-  group 'root'
-  mode "0644"
-  variables :domain => node[:set_domain],
-            :search_domains => %W[ int.#{node[:set_domain]} #{node[:set_domain]}
-                                   members.linode.com ],
-            :nameservers    => %w[ 97.107.133.4 207.192.69.4 207.192.69.5 ]
-end
 
 service "networking" do
   action :nothing
