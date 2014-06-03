@@ -34,6 +34,8 @@ It requires the configuration performed in static_net, so it runs that first.
 
 This recipe installs Linode Longview [described here](https://library.linode.com/longview).
 
+Longview API key must be set on node[:linode][:longview_api_key] attribute.
+
 == linode::api_gem
 
 This recipe installs the linode gem for API access. The cookbook uses this gem

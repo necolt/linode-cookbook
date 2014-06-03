@@ -8,7 +8,7 @@ end
 directory '/etc/linode'
 
 file '/etc/linode/longview.key' do
-  content Chef::EncryptedDataBagItem.load("passwords", "linode")['api_key']
+  content node[:linode][:longview_api_key] 
 end
 
 package 'linode-longview'
