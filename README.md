@@ -30,6 +30,10 @@ create the following entries:
 
 It requires the configuration performed in static_net, so it runs that first.
 
+== linode::longview
+
+This recipe installs Linode Longview [described here](https://library.linode.com/longview).
+
 == linode::api_gem
 
 This recipe installs the linode gem for API access. The cookbook uses this gem
